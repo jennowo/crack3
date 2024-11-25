@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
         }
 
         // Hash password
-        char *hash = md5(password, len);
+        char *hash = md5(password, len - 1);
 
         // Linear search for the hash in the hashes array, display and increment count if found
         if (hash) {
-            printf("Generated hash for password '%s': %s\n", password, hash);
+            //printf("Generated hash for password '%s': %s\n", password, hash);
             
             if(exactStringSearchAA(hash, hashes, size)) {
                 printf("Match found: %s %s \n", password, hash);
