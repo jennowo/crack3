@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         }
 
         // Hash password
-        char *hash = md5(password, len - 1);
+        char *hash = md5(password, strlen(password));
 
         // Linear search for the hash in the hashes array, display and increment count if found
         if (hash) {
