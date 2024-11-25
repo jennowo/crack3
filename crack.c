@@ -23,22 +23,55 @@ int main(int argc, char *argv[])
     // Read the hashes file into an array.
     int size;
     char **hashes = loadFileAA(argv[1], &size);
+
+    if (size == 0) {
+        printf("No hashes loaded.\n");
+        exit(1);
+    }
     
-    // CHALLENGE1: Sort the hashes using qsort.
-    
-    // TODO
     // Open the password file for reading.
+    FILE *dictFile = fopen(argv[2], "r");
+    if (!dictFile) {
+        printf("Dictionary file could not be opened.");
+        exit(1);
+    }
 
-    // TODO
+    char password[PASS_LEN];
+    int count = 0;
+
     // For each password, hash it, then use the array search
-    // function from fileutil.h to find the hash.
-    // If you find it, display the password and the hash.
-    // Keep track of how many hashes were found.
-    // CHALLENGE1: Use binary search instead of linear search.
 
-    // TODO
-    // When done with the file:
-    //   Close the file
-    //   Display the number of hashes found.
-    //   Free up memory.
+    while (fgets(password, PASS_LEN, dictFile)) {
+        
+        // Remove newline if there is one
+        size_t len = strlen(password);
+        if (len > 0 && password[len - 1] == '\n') {
+            password[len - 1] = '\0';
+        }
+
+        // Hash password
+        char *hash = md5(password, len);
+
+        // Linear search for the hash in the hashes array, display and increment count if found
+        if (hash) {
+            printf("Generated hash for password '%s': %s\n", password, hash);
+            
+            if(exactStringSearchAA(hash, hashes, size)) {
+                printf("Match found: %s %s \n", password, hash);
+                count++;
+            }
+            free(hash);
+
+        } else {
+            printf("MD5 failed for password: %s\n", password);
+        }
+    }
+
+    // Close file and free up memory
+    fclose(dictFile);
+    freeAA(hashes, size);
+
+    // Display number of matches
+    printf("Total matches found: %d\n", count);
+    return 0;
 }

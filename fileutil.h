@@ -15,6 +15,7 @@ char (*loadFile2D(char *filename, int *size))[COLS];
 char * substringSearchAA(char *target, char ** arr, int size);
 
 char * substringSearch2D(char *target, char (*arr)[COLS], int size);
+char * exactStringSearchAA(char *target, char **lines, int size);
 
 
 // Free the memory used by the array
